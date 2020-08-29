@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {connect, MapStateToProps, MapDispatchToProps} from 'react-redux';
-import {View, Text, StyleSheet} from 'react-native';
 import {RouteProp} from '@react-navigation/native';
 import {AppRoutesParamsList} from '../../app.routes';
 import {UserState, fetchUserAction} from '../../redux/user';
 import {ReducerState} from '../../redux/store';
+import UserDetailsComponent from './user-details.component';
 
 export const ROUTE_USER_DETAILS = 'user-details';
 
@@ -14,12 +14,6 @@ export interface UserDetailsScreenProps {
   route: RouteProp<AppRoutesParamsList, typeof ROUTE_USER_DETAILS>;
 }
 
-const styles = StyleSheet.create({
-  textStyle: {
-    fontSize: 30,
-  },
-});
-
 class Component extends React.Component<UserDetailsScreenProps> {
   constructor(props: UserDetailsScreenProps) {
     super(props);
@@ -27,27 +21,7 @@ class Component extends React.Component<UserDetailsScreenProps> {
   }
 
   render() {
-    if (this.props.userState.userLoading || !this.props.userState.userData) {
-      return (
-        <View>
-          <Text style={styles.textStyle}>Loading user.</Text>
-        </View>
-      );
-    }
-
-    const userData = this.props.userState.userData;
-
-    return (
-      <View>
-        <Text style={styles.textStyle}>User Id: {userData.user?.userId}</Text>
-        <Text style={styles.textStyle}>
-          First Name: {userData.user?.firstName}
-        </Text>
-        <Text style={styles.textStyle}>
-          Last Name: {userData.user?.lastName}
-        </Text>
-      </View>
-    );
+    return <UserDetailsComponent userState={this.props.userState} />;
   }
 }
 
