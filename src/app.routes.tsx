@@ -8,7 +8,9 @@ import {ROUTE_USER_DETAILS, UserDetailsScreen} from './screens/user-details';
 export type AppRoutesParamsList = {
   [ROUTE_DASHBOARD]: undefined;
   [ROUTE_USERS]: undefined;
-  [ROUTE_USER_DETAILS]: undefined;
+  [ROUTE_USER_DETAILS]: {
+    userId: number;
+  };
 };
 
 export interface AppRoutesProps {}

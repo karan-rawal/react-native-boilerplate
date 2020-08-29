@@ -13,7 +13,9 @@ export interface DashboardScreenProps {
 
 export class DashboardScreen extends React.Component<DashboardScreenProps> {
   goToUserDetails = () => {
-    this.props.navigation.push(ROUTE_USER_DETAILS);
+    this.props.navigation.push(ROUTE_USER_DETAILS, {
+      userId: 1,
+    });
   };
 
   goToUsers = () => {
