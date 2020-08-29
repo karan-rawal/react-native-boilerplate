@@ -1,14 +1,10 @@
-import React from 'react';
-import {View, Text} from 'react-native';
+import * as React from 'react';
+import {AppRoutes} from './app.routes';
 
 export interface AppProps {}
 
 const App: React.SFC<AppProps> = () => {
-  return (
-    <View>
-      <Text>Hello World</Text>
-    </View>
-  );
+  return <AppRoutes />;
 };
 
 export default App;
