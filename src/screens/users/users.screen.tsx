@@ -1,6 +1,8 @@
 import * as React from 'react';
+import {useEffect, useCallback} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {connect, MapStateToProps, MapDispatchToProps} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {UserState, fetchUsersAction} from '../../redux/user';
 import {ReducerState} from '../../redux/store';
 import {AppRoutesParamsList} from '../../app.routes';
@@ -9,47 +11,40 @@ import {UsersComponent} from './users.component';
 
 export const ROUTE_USERS = 'users';
 
-export interface UsersScreenProps {
-  userState: UserState;
-  fetchUsers: typeof fetchUsersAction;
-  navigation: StackNavigationProp<AppRoutesParamsList, typeof ROUTE_USERS>;
-}
+export interface UsersScreenProps {}
+export type UsersScreenNavigationProp = StackNavigationProp<
+  AppRoutesParamsList,
+  typeof ROUTE_USERS
+>;
 
-class Component extends React.Component<UsersScreenProps> {
-  constructor(props: UsersScreenProps) {
-    super(props);
-    this.props.fetchUsers();
-  }
-
-  onViewDetailsPress = (userId: number) => {
-    this.props.navigation.push(ROUTE_USER_DETAILS, {
-      userId,
-    });
-  };
-
-  render() {
-    return (
-      <UsersComponent
-        userState={this.props.userState}
-        onViewDetailsPress={this.onViewDetailsPress}
-      />
-    );
-  }
-}
-
-const mapDispatchToProps: MapDispatchToProps<{}, UsersScreenProps> = {
-  fetchUsers: fetchUsersAction,
+const userStateSelector = (state: ReducerState): UserState => {
+  return state.userState;
 };
 
-const mapStateToProps: MapStateToProps<{}, UsersScreenProps, ReducerState> = (
-  state: ReducerState,
-) => {
-  return {
-    userState: state.userState,
-  };
-};
+export const UsersScreen: React.SFC<UsersScreenProps> = ({}: UsersScreenProps) => {
+  const dispatch = useDispatch();
+  const userState = useSelector<ReducerState, UserState>(userStateSelector);
+  const navigation = useNavigation<UsersScreenNavigationProp>();
+  const fetchUsers = useCallback(() => dispatch(fetchUsersAction()), [
+    dispatch,
+  ]);
 
-export const UsersScreen = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Component);
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
+  const onViewDetailsPress = useCallback(
+    (userId: number) =>
+      navigation.push(ROUTE_USER_DETAILS, {
+        userId,
+      }),
+    [navigation],
+  );
+
+  return (
+    <UsersComponent
+      userState={userState}
+      onViewDetailsPress={onViewDetailsPress}
+    />
+  );
+};
