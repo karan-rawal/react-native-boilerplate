@@ -5,6 +5,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {ROUTE_USER_DETAILS} from '../user-details';
 import {ROUTE_USERS} from '../users';
 import {AppRoutesParamsList} from '../../app.routes';
+import {CounterComponent} from './components/counter.component';
 
 export const ROUTE_DASHBOARD = 'dashboard';
 
@@ -32,6 +33,7 @@ export const DashboardScreen: React.SFC<DashboardScreenProps> = ({}) => {
       <Text>Dashboard Screen</Text>
       <Button title="User Details" onPress={goToUserDetails} />
       <Button title="Users" onPress={goToUsers} />
+      <CounterComponent />
     </View>
   );
 };
