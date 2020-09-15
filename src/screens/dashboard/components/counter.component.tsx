@@ -4,6 +4,10 @@ import {View, Text, Button, TextInput} from 'react-native';
 export const CounterComponent: React.SFC<{}> = () => {
   let previousCount = React.useRef(0);
   const textInputRef = React.useRef<TextInput>(null);
+  const textInputCallbackRef = React.useCallback((ref: TextInput) => {
+    ref?.blur();
+  }, []);
+
   const [count, setCount] = React.useState(0);
 
   const incrementCount = () => {
@@ -19,6 +23,11 @@ export const CounterComponent: React.SFC<{}> = () => {
 
   return (
     <View>
+      <TextInput
+        ref={textInputCallbackRef}
+        placeholder="Callback ref textInput"
+      />
+
       <Text>Current Count: {count}</Text>
       <Text>Previous Count: {previousCount.current}</Text>
       <Button title="increment count" onPress={incrementCount} />
